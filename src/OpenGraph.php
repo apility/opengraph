@@ -1,28 +1,50 @@
 <?php
-
+declare (strict_types = 1);
 namespace Apility\OpenGraph;
 
-class OpenGraph implements Countable {
+class OpenGraph implements \Countable {
+
+  /**
+   * the list is a structure of nested arrays.
+   * 
+   * Consider a type Attribute, which is an array where the first value is the current attributes value
+   * and the second value is another Array of child attributes
+   * 
+   * ```php
+   * $attribute = ['value', ...$attribute]
+   * ```
+   * The root node is the "og" node and should have no value. 
+   * 
+   * 
+   * @property array
+   */
   private $list;
 
   public function __construct($list = [])
   {
-    $this->list = collect($list);
+    $this->list = [NULL, []];
+    $this->list[1]['type'] = ["website", []];
   }
 
   /**
    * Add OpenGraph property
    *
-   * @param string $property Property name
+   * @param string|OpenGraphAttribute $property Property name
    * @param string|int $content Property content
    * @return OpenGraph self
    */
-  public function addProperty (string $property, $content = NULL): self {
-    if (!is_null($property) && !is_null($content)) {
-      $this->list->push([
-        'property' => $property,
-        'content' => $content
-      ]);
+  public function addProperty (string $property, $content): self {
+
+    if(is_null($property) || strlen($property) === 0) {
+      throw new \InvalidArgumentException("Property attribute can not be null or empty");
+    }
+    
+    if($content instanceof OpenGraphAttribute) {
+      $this->list[1][$property] = $content->openGraphNode();
+    } if(is_array($content)) {
+      $this->list[1][$property] = $content;
+    } else if (!is_null($content)) {
+      $this->list[1][$property] = [$content, []];
     }
 
     return $this;
@@ -34,22 +56,11 @@ class OpenGraph implements Countable {
    * @return string Meta tags markup
    */
   public function toMetaTags (): string {
-    if (!$this->list->search(function ($item) {
-      return $item['property'] === 'type';
-    })) {
-      $this->addProperty('type', 'website');
-    }
-
-    return $this->list->map(function ($item) {
-      if ($item['property'] === 'description') {
-        if (strlen($item['content']) >= 300) {
-          $item['content'] = substr($item['content'], 0, 300) . '…';
-        }
-      }
-
-      return '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />';
-    })
-    ->implode(PHP_EOL);
+    $list = self::genObjects("", $this->list, "og");
+    $tags = array_map(function($key, $value) {
+      return '<meta property="' . htmlentities($key) . '" content="' . htmlentities($value) . '" />';
+    }, array_keys($list), array_values($list));
+    return implode(PHP_EOL, $tags);
   }
 
 
@@ -70,12 +81,26 @@ class OpenGraph implements Countable {
    */
   public function count(): int {
     return count($this->list);
+  }
+
+  /**
    * Magic method to override __toString
    *
-   */
    * @return string
+   */
   public function __toString(): string
   {
     return $this->toMetaTags();
   }
+
+  private static function genObjects($key, $object, $prefix="og") {
+    $prefix = implode(":", [rtrim($prefix, ":"), rtrim($key, ":")]);
+    $root = !is_null($object[0]) ? [$prefix => $object[0]] : [];
+    $children = array_map(function($childKey, $value) use ($prefix) {
+      return self::genObjects($childKey, $value, $prefix);
+    }, array_keys($object[1]), array_values($object[1]));
+    return array_merge($root, ...$children);
+  }
 }
+
+

@@ -3,14 +3,14 @@
 declare (strict_types = 1);
 
 namespace Apility\OpenGraph\Tests;
-
+require_once(__DIR__ . "/../src/OpenGraph.php");
 use PHPUnit\Framework\TestCase;
 use Apility\OpenGraph\OpenGraph;
 
 final class OpenGraphTest extends TestCase
 {
   public function testDoesSetDefaultTypeProperty (): void {
-    $expexted = "<meta property=\"og:type\" content=\"website\" />\n";
+    $expexted = "<meta property=\"og:type\" content=\"website\" />";
     $meta = (new OpenGraph)
       ->toMetaTags();
 
@@ -21,7 +21,7 @@ final class OpenGraphTest extends TestCase
   }
 
   public function testCanOverrideTypeProperty (): void {
-    $expexted = "<meta property=\"og:type\" content=\"test\" />\n";
+    $expexted = "<meta property=\"og:type\" content=\"test\" />";
     $meta = (new OpenGraph)
       ->addProperty('type', 'test')
       ->toMetaTags();
@@ -38,6 +38,34 @@ final class OpenGraphTest extends TestCase
     $this->assertEquals(
       $meta->toMetaTags(),
       (string) $meta
+    );
+  }
+  
+  public function testThrowsExceptionIfInvalid() {
+    $m = new OpenGraph;
+    $this->expectException(\TypeError::class);
+    $m->addProperty(NULL, "something");
+  }
+
+  public function testThrowsExceptionIfInvalidEmptyString() {
+    $this->expectException(\InvalidArgumentException::class);
+    $m = new OpenGraph;
+    $m->addProperty("", "something");
+  }
+
+  public function testNestedValues() {
+    $m = new OpenGraph;
+    $m->addProperty("test", ["test1", [ 
+      "best" => ["yo", []],
+      "less" => ["bb", []]
+    ]
+  ]);
+    $this->assertEquals(
+      '<meta property="og:type" content="website" />
+<meta property="og:test" content="test1" />
+<meta property="og:test:best" content="yo" />
+<meta property="og:test:less" content="bb" />',
+      $m->toMetaTags()
     );
   }
 }
