@@ -2,8 +2,7 @@
 
 namespace Apility\OpenGraph;
 
-class OpenGraph
-{
+class OpenGraph implements Countable {
   private $list;
 
   public function __construct($list = [])
@@ -72,10 +71,16 @@ class OpenGraph
   }
 
   /**
+   * Implements Countable interface
+   * 
+   * @return int Length of properties collection
+   */
+  public function count(): int {
+    return count($this->list);
    * Magic method to override __toString
    *
-   * @return string
    */
+   * @return string
   public function __toString(): string
   {
     return $this->toMetaTags();
