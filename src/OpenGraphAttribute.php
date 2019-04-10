@@ -10,5 +10,5 @@ interface OpenGraphAttribute {
    * 
    * @return array
    */
-  function openGraphNode(): array;
+  function openGraphNode();
 }

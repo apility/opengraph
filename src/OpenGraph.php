@@ -119,7 +119,7 @@ class OpenGraph implements \Countable, OpenGraphAttribute {
     return array_merge($root, ...$children);
   }
 
-  public function openGraphNode(): array {
+  public function openGraphNode() {
     return $this->list;
   }
 }

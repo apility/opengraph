@@ -10,3 +10,4 @@ sami.phar
 
 ### PHPUnit ###
 .phpunit.result.cache
+phpunit

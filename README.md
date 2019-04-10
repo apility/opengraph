@@ -38,3 +38,38 @@ $og->addProperty('title', 'Hello World');
 </body>
 </html>
 ```
+
+## OpenGraphAttribute Interface
+In order to have the ability to let objects describe themselves, we have an interface called `OpenGraphAttribute`.
+
+Assuming implementation of an Image class that has the following method:
+```php
+
+class Image extends SomeORM {
+  ...
+
+  public function openGraphNode() {
+    $node = new OpenGraph;
+    $node->setBaseValue("https://ulv.no/bilde.jpg");
+    $node->addProperty("width", 500);
+    $node->addProperty("height", 200);
+    return node;
+  }
+}
+
+```
+
+This object be used as the content attribute and added as a property to another Open Graph
+and will in the case below generate the correct `og:image`, `og:image:width`, and `og:image:height` meta tags.
+```php
+
+// Image implements OpenGraphAttribute
+$image = Image::findorFai(1234);
+
+$og = new OpenGraph;
+$og->addProperty("image", $image);
+
+print($og->toMetaTags("og"));
+
+```
+
