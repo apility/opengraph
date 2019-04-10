@@ -18,9 +18,8 @@ class OpenGraph
    * @param string|int $content Property content
    * @return OpenGraph self
    */
-  public function addProperty(string $property, $content): self
-  {
-    if ($property && $content) {
+  public function addProperty (string $property, $content = NULL): self {
+    if (!is_null($property) && !is_null($content)) {
       $this->list->push([
         'property' => $property,
         'content' => $content
