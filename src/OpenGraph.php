@@ -34,27 +34,14 @@ class OpenGraph
    *
    * @return string Meta tags markup
    */
-  public function toMetaTags(): string
-  {
-    $metaTags = '';
-
+  public function toMetaTags (): string {
     if (!$this->list->search(function ($item) {
       return $item['property'] === 'type';
     })) {
       $this->addProperty('type', 'website');
     }
 
-    if ($this->list->contains('property', 'image')) {
-      if (!$this->list->contains('property', 'image:width')) {
-        $this->addProperty('image:width', 1200);
-      }
-
-      if (!$this->list->contains('property', 'image:height')) {
-        $this->addProperty('image:height', 1200);
-      }
-    }
-
-    $this->list->each(function ($item) use (&$metaTags) {
+    return $this->list->map(function ($item) {
       if ($item['property'] === 'image') {
         $width = $this->list->where('property', 'image:width')->first()['content'];
         $height = $this->list->where('property', 'image:height')->first()['content'];
@@ -68,11 +55,11 @@ class OpenGraph
         }
       }
 
-      $metaTags .= '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
-    });
-
-    return $metaTags;
+      return '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />';
+    })
+    ->implode(PHP_EOL);
   }
+
 
   /**
    * Get length of properties collection
