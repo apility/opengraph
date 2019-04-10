@@ -1,0 +1,21 @@
+{
+    "name": "apility/php-opengraph",
+    "description": "OpenGraph helper class",
+    "type": "library",
+    "require": {
+        "tightenco/collect": "^5.8"
+    },
+    "license": "Beerware",
+    "authors": [
+        {
+            "name": "Erik Djupvik",
+            "email": "erikdju@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Apility\\OpenGraph\\": "src/"
+        }
+    }
+}
