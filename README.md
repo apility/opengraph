@@ -3,7 +3,8 @@
 OpenGraph is a helper class for generating Open Graph meta tags.
 
 [![License: Beerware](https://img.shields.io/badge/license-beerware-green.svg)](https://spdx.org/licenses/Beerware)
-[![Version](https://img.shields.io/github/tag/apility/php-opengraph.svg?label=version)](https://github.com/apility/vipps-php/releases/latest)
+[![Version](https://img.shields.io/github/tag/apility/php-opengraph.svg?label=version)](https://github.com/apility/opengrahph/releases/latest)
+[![CircleCI](https://circleci.com/gh/apility/opengraph/tree/dev.svg?style=shield&circle-token=5df30032f17a7be371fe2fe0f145664e3ca0945a)](https://circleci.com/gh/apility/opengraph/tree/dev)
 
 **[Documentation](http://htmlpreview.github.io/?https://github.com/apility/opengraph/blob/master/docs/index.html)**
 
