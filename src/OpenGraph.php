@@ -45,7 +45,7 @@ class OpenGraph {
       if (!$this->list->contains('property', 'image:width')) {
         $this->addProperty('image:width', 1200);
       }
-  
+
       if (!$this->list->contains('property', 'image:height')) {
         $this->addProperty('image:height', 1200);
       }
@@ -78,5 +78,15 @@ class OpenGraph {
    */
   public function length (): int {
     return count($this->list);
+  }
+
+  /**
+   * Magic method to override __toString
+   *
+   * @return string
+   */
+  public function __toString(): string
+  {
+    return $this->toMetaTags();
   }
 }
