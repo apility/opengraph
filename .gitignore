@@ -1,2 +1,12 @@
 ### Composer ###
 /vendor/
+
+### CGHooks ###
+cghooks.lock
+
+### Docs ###
+/.cache
+sami.phar
+
+### PHPUnit ###
+.phpunit.result.cache

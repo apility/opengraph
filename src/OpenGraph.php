@@ -1,11 +1,13 @@
-<?
+<?php
 
 namespace Apility\OpenGraph;
 
-class OpenGraph {
+class OpenGraph
+{
   private $list;
 
-  public function __construct ($list = []) {
+  public function __construct($list = [])
+  {
     $this->list = collect($list);
   }
 
@@ -16,7 +18,8 @@ class OpenGraph {
    * @param string|int $content Property content
    * @return OpenGraph self
    */
-  public function addProperty (string $property, $content): self {
+  public function addProperty(string $property, $content): self
+  {
     if ($property && $content) {
       $this->list->push([
         'property' => $property,
@@ -32,7 +35,8 @@ class OpenGraph {
    *
    * @return string Meta tags markup
    */
-  public function toMetaTags (): string {
+  public function toMetaTags(): string
+  {
     $metaTags = '';
 
     if (!$this->list->search(function ($item) {
@@ -45,7 +49,7 @@ class OpenGraph {
       if (!$this->list->contains('property', 'image:width')) {
         $this->addProperty('image:width', 1200);
       }
-  
+
       if (!$this->list->contains('property', 'image:height')) {
         $this->addProperty('image:height', 1200);
       }
@@ -76,7 +80,18 @@ class OpenGraph {
    *
    * @return int Length of properties collection
    */
-  public function length (): int {
+  public function length(): int
+  {
     return count($this->list);
+  }
+
+  /**
+   * Magic method to override __toString
+   *
+   * @return string
+   */
+  public function __toString(): string
+  {
+    return $this->toMetaTags();
   }
 }
