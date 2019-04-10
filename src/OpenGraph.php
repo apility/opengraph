@@ -34,10 +34,6 @@ class OpenGraph implements \Countable {
    * @return OpenGraph self
    */
   public function addProperty (string $property, $content): self {
-
-    if($property === "description") {
-      $content = substr($content, 0, 300);
-    }
     if(is_null($property) || strlen($property) === 0) {
       throw new \InvalidArgumentException("Property attribute can not be null or empty");
     }
@@ -48,7 +44,9 @@ class OpenGraph implements \Countable {
     } else if (!is_null($content)) {
       $this->list[1][$property] = [$content, []];
     }
-
+    if($property === "description") {
+      $this->list[1][$property][0] = substr($this->list[1][$property][0], 0, 300);
+    }
     return $this;
   }
 
@@ -65,6 +63,13 @@ class OpenGraph implements \Countable {
     return implode(PHP_EOL, $tags);
   }
 
+  public function getValue($key) {
+    return $this->list[1][$key][0];
+  }
+
+  public function getNode($key) {
+    return new self($this->list[1][$key][1]);
+  }
 
   /**
    * Get length of properties collection

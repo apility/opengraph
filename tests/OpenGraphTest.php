@@ -53,6 +53,14 @@ final class OpenGraphTest extends TestCase
     $m->addProperty("", "something");
   }
 
+  public function testDescriptiontruncate() {
+    $m = new OpenGraph;
+    $m->addProperty('description', "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat officia deserunt eveniet commodi harum modi voluptates, laboriosam praesentium fuga, veniam fugit. Velit odit aperiam dolor ad quo ut delectus architecto!Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat officia deserunt eveniet commodi harum modi voluptates, laboriosam praesentium fuga, veniam fugit. Velit odit aperiam dolor ad quo ut delectus architecto!Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat officia deserunt eveniet commodi harum modi voluptates, laboriosam praesentium fuga, veniam fugit. Velit odit aperiam dolor ad quo ut delectus architecto!Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat officia deserunt eveniet commodi harum modi voluptates, laboriosam praesentium fuga, veniam fugit. Velit odit aperiam dolor ad quo ut delectus architecto!");
+    $this->assertEquals(
+      strlen($m->getValue('description')),
+      300
+    );
+  }
   public function testNestedValues() {
     $m = new OpenGraph;
     $m->addProperty("test", ["test1", [ 
