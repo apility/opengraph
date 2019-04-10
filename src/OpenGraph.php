@@ -9,7 +9,14 @@ class OpenGraph {
     $this->list = collect($list);
   }
 
-  public function addProperty ($property, $content) {
+  /**
+   * Add OpenGraph property
+   *
+   * @param string $property Property name
+   * @param string|int $content Property content
+   * @return OpenGraph self
+   */
+  public function addProperty (string $property, $content): self {
     if ($property && $content) {
       $this->list->push([
         'property' => $property,
@@ -20,7 +27,12 @@ class OpenGraph {
     return $this;
   }
 
-  public function toMetaTags () {
+  /**
+   * Generate meta tags markup
+   *
+   * @return string Meta tags markup
+   */
+  public function toMetaTags (): string {
     $metaTags = '';
 
     if (!$this->list->search(function ($item) {
@@ -30,13 +42,13 @@ class OpenGraph {
     }
 
     if ($this->list->contains('property', 'image')) {
-    if (!$this->list->contains('property', 'image:width')) {
-      $this->addProperty('image:width', 1200);
-    }
-
-    if (!$this->list->contains('property', 'image:height')) {
-      $this->addProperty('image:height', 1200);
-    }
+      if (!$this->list->contains('property', 'image:width')) {
+        $this->addProperty('image:width', 1200);
+      }
+  
+      if (!$this->list->contains('property', 'image:height')) {
+        $this->addProperty('image:height', 1200);
+      }
     }
 
     $this->list->each(function ($item) use (&$metaTags) {
@@ -59,7 +71,12 @@ class OpenGraph {
     return $metaTags;
   }
 
-  public function length () {
+  /**
+   * Get length of properties collection
+   *
+   * @return int Length of properties collection
+   */
+  public function length (): int {
     return count($this->list);
   }
 }
