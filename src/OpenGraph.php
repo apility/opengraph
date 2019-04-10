@@ -2,7 +2,7 @@
 declare (strict_types = 1);
 namespace Apility\OpenGraph;
 
-class OpenGraph implements \Countable {
+class OpenGraph implements \Countable, OpenGraphAttribute {
 
   /**
    * the list is a structure of nested arrays.
@@ -72,6 +72,13 @@ class OpenGraph implements \Countable {
   }
 
   /**
+   * Set base value
+   *
+   */
+  public function setBaseValue($value) {
+    $this->list[0] = $value;
+  }
+  /**
    * Get length of properties collection
    *
    * @return int Length of properties collection
@@ -109,4 +116,7 @@ class OpenGraph implements \Countable {
     return array_merge($root, ...$children);
   }
 
+  public function openGraphNode(): array {
+    return $this->list;
+  }
 }
