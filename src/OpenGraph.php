@@ -29,12 +29,14 @@ class OpenGraph {
       $this->addProperty('type', 'website');
     }
 
+    if ($this->list->contains('property', 'image')) {
     if (!$this->list->contains('property', 'image:width')) {
       $this->addProperty('image:width', 1200);
     }
 
     if (!$this->list->contains('property', 'image:height')) {
       $this->addProperty('image:height', 1200);
+    }
     }
 
     $this->list->each(function ($item) use (&$metaTags) {
