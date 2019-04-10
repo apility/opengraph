@@ -41,13 +41,6 @@ class OpenGraph implements Countable {
     }
 
     return $this->list->map(function ($item) {
-      if ($item['property'] === 'image') {
-        $width = $this->list->where('property', 'image:width')->first()['content'];
-        $height = $this->list->where('property', 'image:height')->first()['content'];
-
-        $item['content'] = get_cdn_media($item['content'], $width . 'x' . $height, 'rc');
-      }
-
       if ($item['property'] === 'description') {
         if (strlen($item['content']) >= 300) {
           $item['content'] = substr($item['content'], 0, 300) . '…';
