@@ -5,7 +5,7 @@ This is intended to be a public project that anyone can participate in. If you w
 Fork, then clone the repo:
 
 ```bash
-git clone git@github.com:your-username/vipps-php.git
+git clone git@github.com:your-username/opengraph.git
 ```
 
 Install it:
@@ -28,7 +28,7 @@ composer run-script test
 
 Push to your fork and **[submit a pull request][pr]**.
 
-[pr]: https://github.com/apility/vipps-php/compare/
+[pr]: https://github.com/apility/opengraph/compare/
 
 At this point you're waiting on us to accept the request. We like to at least comment on pull requests
 within a week (and, typically, within 24 hours). We may suggest
