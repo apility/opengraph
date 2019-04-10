@@ -35,10 +35,12 @@ class OpenGraph implements \Countable {
    */
   public function addProperty (string $property, $content): self {
 
+    if($property === "description") {
+      $content = substr($content, 0, 300);
+    }
     if(is_null($property) || strlen($property) === 0) {
       throw new \InvalidArgumentException("Property attribute can not be null or empty");
     }
-    
     if($content instanceof OpenGraphAttribute) {
       $this->list[1][$property] = $content->openGraphNode();
     } if(is_array($content)) {
@@ -101,6 +103,5 @@ class OpenGraph implements \Countable {
     }, array_keys($object[1]), array_values($object[1]));
     return array_merge($root, ...$children);
   }
+
 }
-
-
