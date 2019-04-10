@@ -1,5 +1,5 @@
 {
-    "name": "apility/php-opengraph",
+    "name": "apility/opengraph",
     "description": "OpenGraph helper class",
     "type": "library",
     "require": {
