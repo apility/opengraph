@@ -2,9 +2,7 @@
   "name": "apility/opengraph",
   "description": "OpenGraph helper class",
   "type": "library",
-  "require": {
-    "tightenco/collect": "^5.8"
-  },
+  "require": {},
   "license": "Beerware",
   "authors": [
     {
