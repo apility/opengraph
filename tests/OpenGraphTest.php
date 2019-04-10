@@ -9,29 +9,6 @@ use Apility\OpenGraph\OpenGraph;
 
 final class OpenGraphTest extends TestCase
 {
-  public function testDoesSetDefaultTypeProperty (): void {
-    $expexted = "<meta property=\"og:type\" content=\"website\" />";
-    $meta = (new OpenGraph)
-      ->toMetaTags();
-
-    $this->assertEquals(
-      $expexted,
-      $meta
-    );
-  }
-
-  public function testCanOverrideTypeProperty (): void {
-    $expexted = "<meta property=\"og:type\" content=\"test\" />";
-    $meta = (new OpenGraph)
-      ->addProperty('type', 'test')
-      ->toMetaTags();
-
-    $this->assertEquals(
-      $expexted,
-      $meta
-    );
-  }
-
   public function testCanStringify (): void {
     $meta = (new OpenGraph);
 
@@ -69,10 +46,27 @@ final class OpenGraphTest extends TestCase
     ]
   ]);
     $this->assertEquals(
-      '<meta property="og:type" content="website" />
-<meta property="og:test" content="test1" />
+      '<meta property="og:test" content="test1" />
 <meta property="og:test:best" content="yo" />
 <meta property="og:test:less" content="bb" />',
+      $m->toMetaTags()
+    );
+  }
+
+  public function testGraphObjectAsContent() {
+    $image = new OpenGraph;
+    $image->setBaseValue("http://url.no");
+    $image->addProperty("width", 100);
+    $image->addProperty("height", 100);
+
+    $m = new OpenGraph;
+    $m->addProperty("type", "website");
+    $m->addProperty("image", $image);
+    $this->assertEquals(
+      '<meta property="og:type" content="website" />
+<meta property="og:image" content="http://url.no" />
+<meta property="og:image:width" content="100" />
+<meta property="og:image:height" content="100" />',
       $m->toMetaTags()
     );
   }

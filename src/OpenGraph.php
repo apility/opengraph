@@ -2,6 +2,9 @@
 declare (strict_types = 1);
 namespace Apility\OpenGraph;
 
+require_once(__DIR__ . "/OpenGraphAttribute.php");
+
+
 class OpenGraph implements \Countable, OpenGraphAttribute {
 
   /**
@@ -23,7 +26,7 @@ class OpenGraph implements \Countable, OpenGraphAttribute {
   public function __construct($list = [])
   {
     $this->list = [NULL, []];
-    $this->list[1]['type'] = ["website", []];
+    //$this->list[1]['type'] = ["website", []];
   }
 
   /**
@@ -39,7 +42,7 @@ class OpenGraph implements \Countable, OpenGraphAttribute {
     }
     if($content instanceof OpenGraphAttribute) {
       $this->list[1][$property] = $content->openGraphNode();
-    } if(is_array($content)) {
+    } else if(is_array($content)) {
       $this->list[1][$property] = $content;
     } else if (!is_null($content)) {
       $this->list[1][$property] = [$content, []];
@@ -55,10 +58,10 @@ class OpenGraph implements \Countable, OpenGraphAttribute {
    *
    * @return string Meta tags markup
    */
-  public function toMetaTags (): string {
-    $list = self::genObjects("", $this->list, "og");
+  public function toMetaTags ($baseKey="og"): string {
+    $list = self::genObjects("", $this->list, $baseKey);
     $tags = array_map(function($key, $value) {
-      return '<meta property="' . htmlentities($key) . '" content="' . htmlentities($value) . '" />';
+      return '<meta property="' . htmlentities($key) . '" content="' . htmlentities((string)$value) . '" />';
     }, array_keys($list), array_values($list));
     return implode(PHP_EOL, $tags);
   }
