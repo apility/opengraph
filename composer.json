@@ -3,7 +3,7 @@
   "description": "OpenGraph helper class",
   "type": "library",
   "require": {
-    "tightenco/collect": "^5.8"
+    "tightenco/collect": "^6.3"
   },
   "license": "Beerware",
   "authors": [
