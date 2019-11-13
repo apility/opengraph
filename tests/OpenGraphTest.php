@@ -9,35 +9,52 @@ use Apility\OpenGraph\OpenGraph;
 
 final class OpenGraphTest extends TestCase
 {
-  public function testDoesSetDefaultTypeProperty (): void {
+  public function testDoesSetDefaultTypeProperty(): void
+  {
     $expexted = "<meta property=\"og:type\" content=\"website\" />\n";
     $meta = (new OpenGraph)
       ->toMetaTags();
 
     $this->assertEquals(
-      $expexted,
-      $meta
+        $expexted,
+        $meta
     );
   }
 
-  public function testCanOverrideTypeProperty (): void {
+  public function testCanOverrideTypeProperty(): void
+  {
     $expexted = "<meta property=\"og:type\" content=\"test\" />\n";
     $meta = (new OpenGraph)
       ->addProperty('type', 'test')
       ->toMetaTags();
 
     $this->assertEquals(
-      $expexted,
-      $meta
+        $expexted,
+        $meta
     );
   }
 
-  public function testCanStringify (): void {
+  public function testCanStringify(): void
+  {
     $meta = (new OpenGraph);
 
     $this->assertEquals(
-      $meta->toMetaTags(),
-      (string) $meta
+        $meta->toMetaTags(),
+        (string) $meta
+    );
+  }
+
+  public function testCanCheckIfPropertyExists(): void
+  {
+    $expected = true;
+
+    $meta = (new OpenGraph)
+      ->addProperty('property', 'value')
+      ->containsProperty('property');
+
+    $this->assertEquals(
+        $expected,
+        $meta
     );
   }
 }

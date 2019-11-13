@@ -39,18 +39,16 @@ class OpenGraph
   {
     $metaTags = '';
 
-    if (!$this->list->search(function ($item) {
-      return $item['property'] === 'type';
-    })) {
+    if (!$this->containsProperty('type')) {
       $this->addProperty('type', 'website');
     }
 
-    if ($this->list->contains('property', 'image')) {
-      if (!$this->list->contains('property', 'image:width')) {
+    if ($this->containsProperty('image')) {
+      if (!$this->containsProperty('image:width')) {
         $this->addProperty('image:width', 1200);
       }
 
-      if (!$this->list->contains('property', 'image:height')) {
+      if (!$this->containsProperty('image:height')) {
         $this->addProperty('image:height', 1200);
       }
     }
@@ -69,7 +67,15 @@ class OpenGraph
         }
       }
 
-      $metaTags .= '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+      if ($item['property'] === 'twitterCard') {
+        $metaTags .= '<meta name="twitter:card" content="' . htmlentities($item['content']) . '" />';
+      } else {
+        $metaTags .= '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+
+        if ($item['property'] === 'title' || $item['property'] === 'description') {
+          $metaTags .= '<meta name="twitter:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+        }
+      }
     });
 
     return $metaTags;
@@ -84,6 +90,18 @@ class OpenGraph
   {
     return count($this->list);
   }
+
+  /**
+   * Check if properties list contains property
+   *
+   * @param $propertyName
+   * @return boolean
+   */
+  public function containsProperty($propertyName): bool
+  {
+    return $this->list->contains('property', '=', $propertyName);
+  }
+
 
   /**
    * Magic method to override __toString
