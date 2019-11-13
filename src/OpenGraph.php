@@ -67,7 +67,15 @@ class OpenGraph
         }
       }
 
-      $metaTags .= '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+      if ($item['property'] === 'twitterCard') {
+        $metaTags .= '<meta name="twitter:card" content="' . htmlentities($item['content']) . '" />';
+      } else {
+        $metaTags .= '<meta property="og:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+
+        if ($item['property'] === 'title' || $item['property'] === 'description') {
+          $metaTags .= '<meta name="twitter:' . htmlentities($item['property']) . '" content="' . htmlentities($item['content']) . '" />' . PHP_EOL;
+        }
+      }
     });
 
     return $metaTags;
